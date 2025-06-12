@@ -32,11 +32,20 @@ pip install -r requirements.txt
 ```
 
 4. Configure as variáveis de ambiente:
-   - Crie um arquivo `.env` na raiz do projeto
-   - Adicione sua chave da API OpenAI:
+   - Copie o arquivo `.env.example` para `.env` na raiz do projeto
+   - Configure as variáveis de ambiente de acordo com o provedor de LLM escolhido:
+
+Para OpenAI:
+```env
+LLM_API_KEY=sua_chave_api_aqui
+LLM_MODEL_NAME=gpt-4
+LLM_BASE_URL=https://api.openai.com/v1
 ```
-OPENAI_API_KEY=sua_chave_api_aqui
-```
+
+Para outros provedores, configure as três variáveis conforme necessário:
+- `LLM_API_KEY`: Sua chave de API
+- `LLM_MODEL_NAME`: Nome do modelo a ser usado
+- `LLM_BASE_URL`: URL base da API
 
 ## Estrutura do Projeto
 
@@ -82,13 +91,13 @@ A aplicação permite fazer consultas em linguagem natural sobre os dados das no
 - Python
 - Streamlit (interface web)
 - LangChain (processamento de linguagem natural)
-- OpenAI (modelo de linguagem)
+- LangChain com suporte a múltiplos provedores LLM (OpenAI, Together.ai, Groq, OpenRouter)
 - SQLite (banco de dados)
 - Pandas (manipulação de dados)
 
 ## Observações
 
-- A aplicação requer uma chave de API válida da OpenAI
+- A aplicação requer uma chave de API válida do provedor escolhido (OpenAI, Together.ai, Groq ou OpenRouter)
 - Os dados são armazenados localmente em um banco SQLite
 - O cache está ativado para melhor performance nas consultas
-- A aplicação está configurada para usar o modelo gpt-4o-mini
+- Todas as três variáveis de ambiente (LLM_API_KEY, LLM_MODEL_NAME, LLM_BASE_URL) são necessárias para qualquer provedor

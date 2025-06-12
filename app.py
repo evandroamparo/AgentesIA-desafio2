@@ -119,31 +119,39 @@ print("Banco de dados criado com sucesso!")
 # We'll use the variable 'arquivo_banco_dados' which is already defined as "notas.db"
 database_uri = f"sqlite:///{arquivo_banco_dados}"
 
-api_key = os.environ.get('OPENAI_API_KEY')
-# api_key = os.environ.get('OPENROUTER_API_KEY')
-# api_key = os.environ.get('GROQ_API_KEY')
-model_name = "gpt-4o-mini"
-base_url = "https://api.openai.com/v1" # não necessário para OpenAI, mas pode ser útil para outros provedores.
+# Configurações do modelo de linguagem
+api_key = os.environ.get('LLM_API_KEY')  # Chave da API (OpenAI, Together, etc)
+model_name = os.environ.get('LLM_MODEL_NAME')  # Nome do modelo com fallback
+base_url = os.environ.get('LLM_BASE_URL')  # URL base da API
 
 if not api_key:
-    raise ValueError("A chave de API do OpenAI não foi encontrada. Por favor, defina a variável de ambiente 'OPENAI_API_KEY'.")
+    raise ValueError("A chave de API não foi encontrada. Por favor, defina a variável de ambiente 'LLM_API_KEY'.")
 
-# Conectar ao banco de dados usando a URI que criamos
-# For SQLite, we don't need the psycopg2 driver part in the SQLDatabase.from_uri call.
-db = SQLDatabase.from_uri(database_uri)
+if not base_url:
+    raise ValueError("A URL base não foi encontrada. Por favor, defina a variável de ambiente 'LLM_BASE_URL'.")
+
+if not model_name:
+    raise ValueError("O nome do modelo não foi encontrado. Por favor, defina a variável de ambiente 'LLM_MODEL_NAME'.")
 
 # Inicializar o LLM da OpenAI
-llm = ChatOpenAI(
-    api_key=api_key,
-    model=model_name,
-    temperature=0,
-    verbose=True,
-    base_url=base_url,
-    cache=True  # o cache deve estar configurado com set_llm_cache
-)
+llm_config = {
+    'api_key': api_key,
+    'model': model_name,
+    'base_url': base_url,
+    'temperature': 0,
+    'verbose': True,
+    'cache': True  # o cache deve estar configurado com set_llm_cache
+}
+
+# Configuração do agente SQL com LangChain
+# Conectar ao banco de dados usando a URI que criamos
+
+db = SQLDatabase.from_uri(database_uri)
+
+llm = ChatOpenAI(**llm_config)
 
 # Criar o agente SQL
-agente = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
+agente = create_sql_agent(llm, db=db, agent_type="tool-calling", verbose=True)
 
 # pergunta1 = "Quais são as 3 empresas de maior faturamento?"
 
