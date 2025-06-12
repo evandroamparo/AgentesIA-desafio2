@@ -180,30 +180,6 @@ st.set_page_config(page_title="Agente de Consulta de Notas Fiscais")
 st.title("Agente de Consulta de Notas Fiscais")
 st.write("### Pergunte algo sobre os dados das notas fiscais e o agente responderá.")
 
-'''
-💡 Exemplos de perguntas:
-
-Qual o valor total das notas fiscais emitidas em janeiro de 2024?
-
-Quais foram os 5 fornecedores que mais emitiram notas fiscais em valor total?
-
-Qual a média de itens por nota fiscal?
-
-Quais produtos tiveram maior volume vendido (em quantidade)?
-
-Qual é o ticket médio (valor médio por nota fiscal)?
-
-Qual o total de notas fiscais emitidas por cada CNPJ fornecedor?
-
-Quantas notas fiscais foram emitidas por dia ao longo de janeiro?
-
-Quais foram os 10 produtos mais vendidos em valor total (preço × quantidade)?
-
-Qual o valor total de notas fiscais emitidas por tipo de operação (ex: entrada, saída)?
-
-Quais notas fiscais tiveram mais de 3 itens diferentes?
-'''
-
 pergunta = st.text_input("Faça sua pergunta:")
 
 if pergunta:
